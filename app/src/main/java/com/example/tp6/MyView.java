@@ -22,14 +22,15 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
     Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     Thread thread = null;
     SurfaceHolder sh;
-
     SensorManager sensorManager;
     Sensor sensor;
     boolean paused = true;
 
-    ArrayList<Balls> ballList = new ArrayList<Balls>();
+    ArrayList<Balls> ballList = new ArrayList<>();
 
     Random weightGenerator = new Random();
+
+    float fall = 1;
 
     float ax;
     float ay;
@@ -69,7 +70,7 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
     }
 
     public void run() {
-        float i = 1f;
+
 
 
         while(!paused) {
@@ -80,21 +81,23 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
             c.drawPaint(paint);
             paint.setColor(Color.BLUE);
 
-            if(ax > 0 && ax <1 && ay > 0 && ay < 1){
+            if(ax > -1 && ax <1 && ay > -1 && ay < 1){
 //                 cy = cy*i;
   //               cx = cx*i;
-
+                fall = 0;
+                //Log.e("i", String.valueOf(i));
+            }
+            else if(ax > -1 && ax <1 && ay > -1 && ay < 1){
+//                 cy = cy*i;
+                //               cx = cx*i;
+                fall = 0;
                 //Log.e("i", String.valueOf(i));
             }
 
-
-
             for (Balls elem:ballList){
-                c.drawCircle(elem.cx, elem.cy, elem.radius, paint);
-            }
-
-            if (!ballList.isEmpty()){
-                c.drawCircle(ballList.get(0).cx, ballList.get(0).cy, ballList.get(0).radius, paint);
+                c.drawCircle(elem.getCx(), elem.getCy(), elem.getRadius(), paint);
+                elem.setCy(elem.getCy()+fall);
+                //Log.i("cy",Float.toString(elem.getCy()));
             }
             //c.drawCircle(ballList.get(1).cx, ballList.get(1).cy, ballList.get(1).radius, paint);
             sh.unlockCanvasAndPost(c);
@@ -107,21 +110,22 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
         float x = event.getX();
         float y = event.getY();
 
-        Canvas c = sh.lockCanvas();
+        //Canvas c = sh.lockCanvas();
 
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                ballList.add(new Balls(1f +weightGenerator.nextFloat()* (1f - 2f),20f+ weightGenerator.nextFloat()* (40f - 100f),x,y));
+           // case MotionEvent.ACTION_DOWN:
+                //
 
-                break;
+           //     break;
             case MotionEvent.ACTION_UP:
-
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
+                 //ballList.add(new Balls(1f,40f,x,y));
+                ballList.add(new Balls(1f +weightGenerator.nextFloat()* (1f - 2f),50f+ weightGenerator.nextFloat()* (50f - 100f),x,y));
+/*                break;
+           case MotionEvent.ACTION_MOVE:
+                break;*/
         }
 
-        sh.unlockCanvasAndPost(c);
+        //sh.unlockCanvasAndPost(c);
         return true;
     }
 

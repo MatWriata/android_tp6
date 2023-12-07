@@ -82,7 +82,7 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
             c.drawPaint(paint);
             paint.setColor(Color.BLUE);
 
-            if(ax > -1 && ax <1 && ay > -1 && ay < 1){
+/*            if(ax > -1 && ax <1 && ay > -1 && ay < 1){
 //                 cy = cy*i;
   //               cx = cx*i;
                 fall = 0;
@@ -111,13 +111,17 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
                 //               cx = cx*i;
                 fall_side = 0;
                 //Log.e("i", String.valueOf(i));
-            }
+            }*/
 
             for (Balls elem:ballList){
                 c.drawCircle(elem.getCx(), elem.getCy(), elem.getRadius(), paint);
-                if (elem.getCx()+fall < c.getWidth() && elem.getCx()+fall > 0f){
-                    elem.setCy(elem.getCy()+fall);
+                if (elem.getCx()+ax < c.getWidth() && elem.getCx()+ax > -1f){
+                    elem.setCy(elem.getCy()+ay*0.25f);
                 }
+                if (elem.getCy()+ay < c.getHeight() && elem.getCy()+ay > -1f){
+                    elem.setCx(elem.getCx()-ax*0.25f);
+                }
+
                 //Log.i("cy",Float.toString(elem.getCy()));
             }
             //c.drawCircle(ballList.get(1).cx, ballList.get(1).cy, ballList.get(1).radius, paint);

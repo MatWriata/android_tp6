@@ -31,6 +31,7 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
     Random weightGenerator = new Random();
 
     float fall = 1;
+    float fall_side = 0;
 
     float ax;
     float ay;
@@ -87,16 +88,36 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
                 fall = 0;
                 //Log.e("i", String.valueOf(i));
             }
-            else if(ax > -1 && ax <1 && ay > -1 && ay < 1){
+            else if(ax > 1){
 //                 cy = cy*i;
                 //               cx = cx*i;
-                fall = 0;
+                fall = 1;
+                //Log.e("i", String.valueOf(i));
+            }
+            else if(ax < -1){
+//                 cy = cy*i;
+                //               cx = cx*i;
+                fall = -1;
+                //Log.e("i", String.valueOf(i));
+            }
+            else if(ay > 1){
+//                 cy = cy*i;
+                //               cx = cx*i;
+                fall_side = 0;
+                //Log.e("i", String.valueOf(i));
+            }
+            else if(ay < -1){
+//                 cy = cy*i;
+                //               cx = cx*i;
+                fall_side = 0;
                 //Log.e("i", String.valueOf(i));
             }
 
             for (Balls elem:ballList){
                 c.drawCircle(elem.getCx(), elem.getCy(), elem.getRadius(), paint);
-                elem.setCy(elem.getCy()+fall);
+                if (elem.getCx()+fall < c.getWidth() && elem.getCx()+fall > 0f){
+                    elem.setCy(elem.getCy()+fall);
+                }
                 //Log.i("cy",Float.toString(elem.getCy()));
             }
             //c.drawCircle(ballList.get(1).cx, ballList.get(1).cy, ballList.get(1).radius, paint);

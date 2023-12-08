@@ -115,11 +115,18 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
 
             for (Balls elem:ballList){
                 c.drawCircle(elem.getCx(), elem.getCy(), elem.getRadius(), paint);
-                if (elem.getCx()+ax < c.getWidth() && elem.getCx()+ax > -1f){
-                    elem.setCy(elem.getCy()+ay*0.25f);
+                if (elem.getCx()-ax < c.getWidth() && elem.getCx()-ax > -1f){
+                    elem.setCx(elem.getCx()-ax*0.25f);
+                    Log.i("if","in");
+                }
+                else {
+                    elem.setCx(elem.getCx()+ax*0.25f);
                 }
                 if (elem.getCy()+ay < c.getHeight() && elem.getCy()+ay > -1f){
-                    elem.setCx(elem.getCx()-ax*0.25f);
+                    elem.setCy(elem.getCy()+ay*0.25f);
+                }
+                else {
+                    elem.setCy(elem.getCy()-ay*0.25f);
                 }
 
                 //Log.i("cy",Float.toString(elem.getCy()));
@@ -160,7 +167,7 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
         ay = event.values[1];
         az = event.values[2];
 
-        Log.i("Info acceleration", "x:" + ax + ", y:" + ay + ", z:" + az);
+        //Log.i("Info acceleration", "x:" + ax + ", y:" + ay + ", z:" + az);
     }
 
     @Override

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/change_to_3d_cube"
-        android:title="3D Cube"
+        android:id="@+id/change_to_2d_balls"
+        android:title="2D Balls"
         app:showAsAction="always" />
 </menu>

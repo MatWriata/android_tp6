@@ -16,6 +16,14 @@ public class Balls {
         this.cy = cy;
     }
 
+    // Dans la classe Balls
+    public boolean collidesWith(Balls otherBall) {
+        float distance = (float) Math.sqrt(Math.pow(this.cx - otherBall.getCx(), 2) + Math.pow(this.cy - otherBall.getCy(), 2));
+        return distance < this.radius + otherBall.getRadius();
+    }
+
+
+
     public float getWeight() {
         return weight;
     }

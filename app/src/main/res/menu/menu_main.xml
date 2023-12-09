@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/change_to_3d_cube"
-        android:title="3D Cube"
+        android:id="@+id/go_to_cube"
+        android:title="Cube"
         app:showAsAction="always" />
 </menu>

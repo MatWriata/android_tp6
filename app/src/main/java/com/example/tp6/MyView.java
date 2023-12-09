@@ -15,6 +15,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,24 +30,17 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
 
     ArrayList<Balls> ballList = new ArrayList<>();
 
-    Random weightGenerator = new Random();
-
-    float fall = 1;
-    float fall_side = 0;
+    Random randomGenerator = new Random();
 
     float ax;
     float ay;
     float az;
-
     boolean collide = true;
 
-
-/*    public MyView(Context context, AttributeSet attrSet) {
-        super(context, attrSet);
-        sh = getHolder();
-        setOnTouchListener(this);
-    }*/
-
+    public boolean collideSwitch(){
+        this.collide = !collide;
+        return collide;
+    }
 
     public MyView(Context context) {
         super(context, null);
@@ -70,41 +65,42 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
         }
         thread = null;
         sensorManager.unregisterListener(this);
+
     }
 
 
 
     public void run() {
 
-        // Dans la méthode run de la classe MyView
         while (!paused) {
-            // ... (autres parties du code)
 
-
-                        if (!sh.getSurface().isValid()) continue;
+            if (!sh.getSurface().isValid()) continue;
             Canvas c = sh.lockCanvas();
             paint.setAntiAlias(true);
             paint.setColor(Color.WHITE);
-            c.drawPaint(paint);
-            paint.setColor(Color.BLUE);
+           c.drawPaint(paint);
+
             for (Balls elem:ballList) {
-                Balls currentBall = elem;
+                paint.setColor(Color.rgb(elem.getColor()&0xFFFFFF00,(elem.getColor()&0xFFFF00FF)>>8,(elem.getColor()&0xFF00FFFF)>>16));
                 c.drawCircle(elem.getCx(), elem.getCy(), elem.getRadius(), paint);
+
+
+                elem.setCx(elem.getCx() - (ax * (0.025f * elem.getRadius())));
+                elem.setCy(elem.getCy() + (ay * (0.025f * elem.getRadius())));
 
                 if (collide){
                     for (int j = 0; j < ballList.size(); j++) {
                         Balls otherBall = ballList.get(j);
 
-                        if (currentBall.collidesWith(otherBall)) {
-                            // Les boules se chevauchent, ajustez les positions pour les empiler
-                            float overlap = (currentBall.getRadius() + otherBall.getRadius()) - (float) Math.sqrt(Math.pow(currentBall.getCx() - otherBall.getCx(), 2) + Math.pow(currentBall.getCy() - otherBall.getCy(), 2));
-                            float angle = (float) Math.atan2(otherBall.getCy() - currentBall.getCy(), otherBall.getCx() - currentBall.getCx());
+                        if (elem.collidesWith(otherBall)) {
+                            float overlap = (elem.getRadius() + otherBall.getRadius()) - (float) Math.sqrt(Math.pow(elem.getCx() - otherBall.getCx(), 2) + Math.pow(elem.getCy() - otherBall.getCy(), 2));
+                            float angle = (float) Math.atan2(otherBall.getCy() - elem.getCy(), otherBall.getCx() - elem.getCx());
 
                             float offsetX = overlap * (float) Math.cos(angle);
                             float offsetY = overlap * (float) Math.sin(angle);
 
-                            currentBall.setCx(currentBall.getCx() - offsetX / 2);
-                            currentBall.setCy(currentBall.getCy() - offsetY / 2);
+                            elem.setCx(elem.getCx() - offsetX / 2);
+                            elem.setCy(elem.getCy() - offsetY / 2);
 
                             otherBall.setCx(otherBall.getCx() + offsetX / 2);
                             otherBall.setCy(otherBall.getCy() + offsetY / 2);
@@ -112,84 +108,32 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
                     }
                 }
 
-
-                                if (elem.getCx()-ax < c.getWidth() && elem.getCx()-ax > -1f){
-                    elem.setCx(elem.getCx()-ax*0.25f);
-                    Log.i("if","in");
-                }
-                else {
-                    elem.setCx(elem.getCx()+ax*0.25f);
-                }
-                if (elem.getCy()+ay < c.getHeight() && elem.getCy()+ay > -1f){
-                    elem.setCy(elem.getCy()+ay*0.25f);
-                }
-                else {
-                    elem.setCy(elem.getCy()-ay*0.25f);
+                float x = elem.getCx();
+                float y = elem.getCy();
+                if (x <= 0 + elem.getRadius() || x >= c.getWidth() - elem.getRadius()) {
+                    elem.setCx(x <= 0 + elem.getRadius() ? 0 + elem.getRadius() : c.getWidth() - elem.getRadius());
                 }
 
-                // ... (autres parties du code)
+                if (y <= 0 + elem.getRadius() || y >= c.getHeight() - elem.getRadius()) {
+                    elem.setCy(y <= 0 + elem.getRadius() ? 0 + elem.getRadius() : c.getHeight() - elem.getRadius());
+                }
+
             }
-
-            // ... (autres parties du code)
             sh.unlockCanvasAndPost(c);
         }
-
-
-//        while(!paused) {
-//            if (!sh.getSurface().isValid()) continue;
-//            Canvas c = sh.lockCanvas();
-//            paint.setAntiAlias(true);
-//            paint.setColor(Color.WHITE);
-//            c.drawPaint(paint);
-//            paint.setColor(Color.BLUE);
-//
-//
-//
-//            for (Balls elem:ballList){
-//                c.drawCircle(elem.getCx(), elem.getCy(), elem.getRadius(), paint);
-//                if (elem.getCx()-ax < c.getWidth() && elem.getCx()-ax > -1f){
-//                    elem.setCx(elem.getCx()-ax*0.25f);
-//                    Log.i("if","in");
-//                }
-//                else {
-//                    elem.setCx(elem.getCx()+ax*0.25f);
-//                }
-//                if (elem.getCy()+ay < c.getHeight() && elem.getCy()+ay > -1f){
-//                    elem.setCy(elem.getCy()+ay*0.25f);
-//                }
-//                else {
-//                    elem.setCy(elem.getCy()-ay*0.25f);
-//                }
-//
-//                //Log.i("cy",Float.toString(elem.getCy()));
-//            }
-//            //c.drawCircle(ballList.get(1).cx, ballList.get(1).cy, ballList.get(1).radius, paint);
-//            sh.unlockCanvasAndPost(c);
-//
-//        }
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-
-        //Canvas c = sh.lockCanvas();
+        float weight = 20f+ randomGenerator.nextFloat()* (100f - 20f);
+        int color = randomGenerator.nextInt();
 
         switch (event.getAction()) {
-           // case MotionEvent.ACTION_DOWN:
-                //
-
-           //     break;
             case MotionEvent.ACTION_UP:
-                 //ballList.add(new Balls(1f,40f,x,y));
-                ballList.add(new Balls(1f +weightGenerator.nextFloat()* (1f - 2f),50f+ weightGenerator.nextFloat()* (50f - 100f),x,y));
-/*                break;
-           case MotionEvent.ACTION_MOVE:
-                break;*/
+                ballList.add(new Balls(weight/10f,weight,x,y,color));
         }
-
-        //sh.unlockCanvasAndPost(c);
         return true;
     }
 
@@ -198,8 +142,6 @@ public class MyView extends SurfaceView implements Runnable, View.OnTouchListene
         ax = event.values[0];
         ay = event.values[1];
         az = event.values[2];
-
-        //Log.i("Info acceleration", "x:" + ax + ", y:" + ay + ", z:" + az);
     }
 
     @Override

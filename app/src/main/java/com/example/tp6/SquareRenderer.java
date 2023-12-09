@@ -15,7 +15,9 @@ import javax.microedition.khronos.opengles.GL11;
 public class SquareRenderer implements GLSurfaceView.Renderer{
     private Square shape;
     private static float anglePyramid = 0; // Rotational angle in degree for pyramid (NEW)
-    private static float angleCube = 0;    // Rotational angle in degree for cube (NEW)
+    public static float angleCubeX = 0;    // Rotational angle in degree for cube (NEW)
+
+    public static float angleCubeY = 0;
     private static float speedPyramid = 2.0f; // Rotational speed for pyramid (NEW)
     private static float speedCube = -1.5f;
 
@@ -26,24 +28,15 @@ public class SquareRenderer implements GLSurfaceView.Renderer{
     @Override
     public void onDrawFrame(GL10 gl) {
         gl.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
         gl.glMatrixMode(GL11.GL_MODELVIEW);
         gl.glLoadIdentity();
-      //  GLU.gluLookAt(gl,0,0,-5,0,0,0,0,2,0);
-      //  GLU.gluLookAt();
         gl.glLoadIdentity();                // Reset the model-view matrix
-        gl.glTranslatef(-2.5f, 2.0f, -8.0f); // Translate right and into the screen
-        gl.glScalef(0.8f, 0.8f, 0.8f);      // Scale down (NEW)
-        gl.glRotatef(angleCube, 1.0f, 0, 0); // rotate about the axis (1,1,1) (NEW)
-        gl.glRotatef(angleCube, 0, 0, 1.0f);
+        gl.glTranslatef(0f, 0f, -8.0f);
+        gl.glScalef(2.5f, 2.5f, 2.5f);      // Scale down (NEW)
+        gl.glScalef(1f, 1f, 1f);
+        gl.glRotatef(angleCubeX, 1.0f, 0, 0); // rotate about the axis (1,1,1) (NEW)
+        gl.glRotatef(angleCubeY, 0, 1.0f, 0);
         shape.draw(gl);                      // Draw the cube (NEW)
-
-        // Update the rotational angle after each refresh (NEW)
-        anglePyramid += speedPyramid;   // (NEW)
-        angleCube += speedCube;
-       // shape.draw(gl);
-
-        //gl.glDisableClientState(GL11.GL_VERTEX_ARRAY);
     }
 
     @Override
@@ -51,26 +44,19 @@ public class SquareRenderer implements GLSurfaceView.Renderer{
 
         gl.glViewport(0, 0, width, height);
 
-        float ratio;
-        float zNear = .1f;
+        float ratio = (float)width / (float)height;
+        float zNear = 0.1f;
         float zFar = 1000f;
         float fieldOfView = (float) Math.toRadians(30);
         float size;
 
         gl.glEnable(GL11.GL_NORMALIZE);
 
-        ratio = (float) width / (float) height;
-
         gl.glMatrixMode(GL11.GL_PROJECTION);
 
         size = zNear * (float) (Math.tan((double) (fieldOfView / 2.0f)));
-        GLU.gluPerspective(gl, 105.0f, (float)width / (float)height, 0.1f, 50.0f);
-       // gl.glFrustumf(-size, size, -size / ratio, size / ratio, zNear, zFar);
-      // gl.glFrustumf(-ratio, ratio, -1, 4.5f, 1, 45);
-       // gl.glFrustumf();
-                //  Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
-
-                gl.glMatrixMode(GL11.GL_MODELVIEW);
+        GLU.gluPerspective(gl, 105.0f, ratio, zNear, 50.0f);
+        gl.glMatrixMode(GL11.GL_MODELVIEW);
     }
 
     @Override

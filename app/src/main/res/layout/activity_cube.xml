@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SquareActivity">
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -16,16 +16,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" >
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/material_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="150px"
-        android:background="#FFFFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:title="Balls"
-        app:titleTextColor="@color/black"
-    />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/material_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="150px"
+            android:background="#FF000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:title="Cube"
+            app:titleTextColor="@color/white" />
 
     </LinearLayout>
 
